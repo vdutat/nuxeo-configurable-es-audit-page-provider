@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.elasticsearch.override.configurableprovider">
+
+  <require>org.nuxeo.ecm.platform.audit.PageProviderservice.es.contrib</require>
+
+  <extension target="org.nuxeo.ecm.platform.query.api.PageProviderService" point="providers">
+
+    <genericPageProvider class="org.nuxeo.elasticsearch.audit.pageprovider.ESDocumentHistoryConfigurablePageProvider" name="DOCUMENT_HISTORY_PROVIDER">
+      <whereClause docType="BasicAuditSearch">
+        <fixedPart>
+{
+ "bool" : {
+      "must" : [
+        { "term": { "docUUID": "?" } },
+        { "range": { "eventDate": { "lte": "?" } } },
+        { "bool": {
+          "should": [
+            { "bool": {
+              "must": [
+                { "term": { "eventId": { "value": "download" } } },
+                { "bool": {
+                  "should": [
+                    { "term": { "extended.blobXPath": "file:content" } },
+                    { "prefix": { "extended.blobXPath": "files:files" } }
+                  ]
+                } }
+              ]
+            } },
+            { "bool": {
+              "must_not": [ { "term": { "eventId": "download" } } ]
+            } }
+          ]
+        } }
+      ]
+ }
+}
+        </fixedPart>
+        <predicate operator="BETWEEN" parameter="eventDate">
+          <field name="startDate" schema="basicauditsearch"/>
+          <field name="endDate" schema="basicauditsearch"/>
+        </predicate>
+        <predicate operator="IN" parameter="category">
+          <field name="eventCategories" schema="basicauditsearch"/>
+        </predicate>
+        <predicate operator="IN" parameter="eventId">
+          <field name="eventIds" schema="basicauditsearch"/>
+        </predicate>
+        <predicate operator="IN" parameter="principalName">
+          <field name="principalNames" schema="basicauditsearch"/>
+        </predicate>
+      </whereClause>
+      <sort ascending="false" column="eventDate"/>
+        <pageSize>10</pageSize>
+        <maxPageSize>1000</maxPageSize>
+    </genericPageProvider>
+
+  </extension>
+
+</component>

@@ -1,0 +1,8 @@
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Manifest-Version: 1.0
+Bundle-Vendor: com.acme.elasticsearch.audit
+Bundle-Version: 1.0.0
+Bundle-Name: nuxeo-configurable-es-audit-page-provider-core
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.acme.elasticsearch.audit.nuxeo-configurable-es-audit-page-provider-core;singleton=true
