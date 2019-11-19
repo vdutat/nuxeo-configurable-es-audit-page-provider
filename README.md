@@ -1,4 +1,4 @@
-# nuxeo-filtered-download-audit-page-provider
+# nuxeo-configurable-es-audit-page-provider
 
 This plug-in redefines **ES** page provider `DOCUMENT_HISTORY_PROVIDER` in order to easily customize its ES DSL queries through a simgle **page provider** override.
 
